@@ -7,14 +7,6 @@ void main() {
   runApp(const MyApp());
 }
 
- Future<int> getNumber() async {
-    await Future.delayed(Duration(seconds: 2));
-    return 5;
-    int number = await getNumber();
-    print(number);
-  }
-
-
 
 class MyApp extends StatefulWidget {
   const MyApp({super.key});
@@ -24,7 +16,6 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  // List<dynamic> _data = [];
   @override
   void initState() {
     // TODO: implement initState
@@ -48,7 +39,6 @@ class _MyAppState extends State<MyApp> {
   }
 
   
-  
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -60,6 +50,7 @@ class _MyAppState extends State<MyApp> {
               return ListTile(
                 title: Text(_data[index]['title']),
                 subtitle: Text(_data[index]['description']),
+                trailing: Image.network(_data[index]['thumbnail']),
               );
             },
           ),
