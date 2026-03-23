@@ -1,8 +1,8 @@
-import 'dart:convert';
+import 'package:backend_test/data/product_data.dart';
 import 'package:backend_test/models/product_model.dart';
 import 'package:backend_test/screens/products_detail.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 
 class ProductsScreen extends StatefulWidget {
   const ProductsScreen({super.key});
@@ -13,6 +13,7 @@ class ProductsScreen extends StatefulWidget {
 
 class _ProductsScreenState extends State<ProductsScreen> {
   List<ProductModel> _data = [];
+  final ProductsData productsData = ProductsData();
 
   @override
   void initState() {
@@ -21,23 +22,12 @@ class _ProductsScreenState extends State<ProductsScreen> {
   }
 
   Future<void> fetchData() async {
+    final cleanProductList = await productsData.fetchProducts();
+
     // GET request to the API
-    final response = await http.get(
-      Uri.parse("https://dummyjson.com/products"),
-    );
-    if (response.statusCode == 200) {
-      Map<String, dynamic> decodedData = jsonDecode(response.body);
-
-      List<dynamic> rawProductList = decodedData['products'];
-
-      List<ProductModel> cleanProductList = rawProductList
-          .map((item) => ProductModel.fromJson(item))
-          .toList();
-
-      setState(() {
-        _data = cleanProductList;
-      });
-    }
+    setState(() {
+      _data = cleanProductList;
+    });
   }
 
   @override
@@ -80,11 +70,18 @@ class ProductsList extends StatelessWidget {
               children: [
                 ClipRRect(
                   borderRadius: BorderRadius.vertical(top: Radius.circular(15)),
-                  child: Image.network(
-                    product.thumbnail,
+                  child: CachedNetworkImage(
+                    imageUrl: product.thumbnail,
                     width: width,
                     height: height * 0.4,
                     fit: BoxFit.cover,
+
+                    placeholder: (context, url) => Container(
+                      height: height * 0.4,
+                      width: double.infinity,
+                      alignment: Alignment.center,
+                      child: CircularProgressIndicator(),
+                    ),
                   ),
                 ),
 

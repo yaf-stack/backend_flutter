@@ -27,4 +27,15 @@ class ProductModel {
       rating: (json['rating'] ?? 0).toDouble(),
     );
   }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'title': title,
+      'description': description,
+      'thumbnail': thumbnail,
+      'category': category,
+      'price': price,
+      'rating': rating,
+    };
+  }
 }

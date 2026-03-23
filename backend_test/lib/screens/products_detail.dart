@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import '../models/product_model.dart';
 
@@ -28,11 +29,18 @@ class _ProductsDetailState extends State<ProductsDetail> {
                   color: const Color.fromRGBO(244, 245, 244, 0.8),
                   borderRadius: BorderRadius.circular(10),
                 ),
-                child: Image.network(
-                  widget.product.thumbnail,
+                child: CachedNetworkImage(
+                  imageUrl: widget.product.thumbnail,
                   width: width,
                   height: height * 0.4,
                   fit: BoxFit.cover,
+
+                  placeholder: (context, url) => Container(
+                    height: height * 0.4,
+                    width: double.infinity,
+                    alignment: Alignment.center,
+                    child: CircularProgressIndicator(),
+                  ),
                 ),
               ),
 
@@ -142,7 +150,7 @@ class _ProductsDetailState extends State<ProductsDetail> {
 
                   SizedBox(height: 10),
                   SizedBox(
-                    height: height * 0.2,
+                    height: height * 0.3,
                     child: Align(
                       alignment: AlignmentGeometry.centerLeft,
                       child: Padding(
